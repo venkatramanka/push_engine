@@ -1,0 +1,43 @@
+<p style="visibility:hidden" id="uname"><%=params[:uname]%></p>
+<p style="visibility:hidden" id="token"><%=@hex%></p>
+<div id="new_msg"></div>
+<script>
+$(document).ready(function(){
+var socket, host;
+host = "ws://10.106.50.217:3001";
+
+function connect() {
+  try {
+    socket = new WebSocket(host);
+    socket.onopen = function() {
+      socket.send($('#uname').html());
+    }
+
+    socket.onclose = function() {
+
+    }
+
+    socket.onmessage = function(msg) {
+        $('#new_msg').append(msg.data);
+    }
+  } catch(exception) {
+    alert(exception);
+  }
+}
+
+connect();
+
+function closeSocket(){
+    socket.close();
+}
+
+});
+
+function send_msg(to, msg){
+  $.ajax({
+    type: 'POST',
+    url: '/pusher/push/send_msg',
+    data: {token: $('#token').html(), msg_from: $('#uname').html(), msg_to: to, msg: msg}
+  });
+}
+</script>

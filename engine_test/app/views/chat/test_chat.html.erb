@@ -1,0 +1,11 @@
+<iframe style="border:0" id="pusher" src=""></iframe>
+Msg to : <input type = "text" id="msg_to"></input>
+Msg : <input type = "text" id="msg"></input>
+<input type = "button" id="send" value="Send" onclick="send_msg()"></input>
+<script>
+var name = prompt("Enter UserName..");
+$('#pusher').attr('src','/pusher/push/push_frame?uname='+name);
+function send_msg(){
+	document.getElementById('pusher').contentWindow.send_msg($('#msg_to').val(), $('#msg').val());
+}
+</script>
